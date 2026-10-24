@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Royal Arena - Tournament App</title>
+
+  <!-- PWA & Mobile Meta Tags -->
+  <meta name="theme-color" content="#050811">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Royal Arena">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background-color: #050811;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #F8FAFC;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFFBEB 0%, #FBBF24 50%, #D97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gold-btn {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+    }
+    .gold-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-12">
+
+  <!-- TOP BAR -->
+  <header class="sticky top-0 z-30 bg-[#050811]/95 backdrop-blur border-b border-amber-500/20 px-4 py-3">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">👑</span>
+        <div>
+          <h1 class="text-base font-black gold-gradient-text tracking-wider uppercase">The Royal Arena</h1>
+          <p class="text-[10px] text-amber-200/80 font-semibold tracking-wider">टूर्नामेंट मैनेजर PRO</p>
+        </div>
+      </div>
+      <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+        ऑनलाइन
+      </span>
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="flex-1 max-w-xl w-full mx-auto px-4 py-4 space-y-4">
+
+    <!-- HERO DASHBOARD BANNER -->
+    <div class="bg-gradient-to-br from-slate-900 to-[#070b14] border border-amber-500/30 rounded-2xl p-4 shadow-xl">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-amber-400 uppercase bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+            आधिकारिक पोर्टल
+          </span>
+          <h2 class="text-lg font-black text-white mt-1">Cricket Squad Manager</h2>
+          <p class="text-xs text-gray-400">खिलाड़ी जोड़ें और संतुलित टीमें तैयार करें।</p>
+        </div>
+        <span class="text-3xl">🏏</span>
+      </div>
+    </div>
+
+    <!-- STAT COUNTERS -->
+    <div class="grid grid-cols-4 gap-2 text-center">
+      <div class="bg-slate-900/90 border border-gray-800 p-2.5 rounded-xl">
+        <div class="text-[10px] text-gray-400 font-semibold">कुल</div>
+        <div id="statTotal" class="text-xl font-black text-amber-400">0</div>
+      </div>
+      <div class="bg-slate-900/90 border border-gray-800 p-2.5 rounded-xl">
+        <div class="text-[10px] text-blue-400 font-semibold">बल्लेबाज़</div>
+        <div id="statBatsman" class="text-xl font-black text-blue-400">0</div>
+      </div>
+      <div class="bg-slate-900/90 border border-gray-800 p-2.5 rounded-xl">
+        <div class="text-[10px] text-emerald-400 font-semibold">गेंदबाज़</div>
+        <div id="statBowler" class="text-xl font-black text-emerald-400">0</div>
+      </div>
+      <div class="bg-slate-900/90 border border-gray-800 p-2.5 rounded-xl">
+        <div class="text-[10px] text-purple-400 font-semibold">ऑल-राउंडर</div>
+        <div id="statAllRounder" class="text-xl font-black text-purple-400">0</div>
+      </div>
+    </div>
+
+    <!-- REGISTRATION FORM -->
+    <div class="bg-slate-900/95 border border-amber-500/30 rounded-2xl p-4 shadow-lg">
+      <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-1.5">
+        <span>✍️</span> <span>नया खिलाड़ी पंजीकृत करें</span>
+      </h3>
+
+      <form id="addPlayerForm" onsubmit="savePlayer(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs text-gray-300 font-medium mb-1">खिलाड़ी का नाम</label>
+          <input 
+            type="text" 
+            id="playerName" 
+            required 
+            placeholder="उदा. राहुल शर्मा" 
+            class="w-full bg-slate-950 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+          >
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs text-gray-300 font-medium mb-1">भूमिका (Role)</label>
+            <select 
+              id="playerRole" 
+              class="w-full bg-slate-950 border border-gray-800 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+            >
+              <option value="Batsman">बल्लेबाज़ (Batsman)</option>
+              <option value="Bowler">गेंदबाज़ (Bowler)</option>
+              <option value="All-Rounder">ऑल-राउंडर (All-Rounder)</option>
+              <option value="Wicketkeeper">विकेटकीपर (Keeper)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-300 font-medium mb-1">मोबाइल नंबर</label>
+            <input 
+              type="tel" 
+              id="playerPhone" 
+              placeholder="10 अंकों का नंबर" 
+              class="w-full bg-slate-950 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+            >
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full gold-btn text-black font-extrabold text-xs py-2.5 rounded-xl mt-2 tracking-wide"
+        >
+          + खिलाड़ी सेव करें
+        </button>
+      </form>
+    </div>
+
+    <!-- SQUAD LIST -->
+    <div class="bg-slate-900/90 border border-gray-800 rounded-2xl p-4">
+      <div class="flex items-center justify-between mb-3 border-b border-gray-800 pb-2">
+        <h3 class="text-xs font-bold text-gray-200 uppercase tracking-wider">पंजीकृत खिलाड़ी सूची</h3>
+        <span id="squadCountBadge" class="text-[11px] text-amber-400 font-bold">0 खिलाड़ी</span>
+      </div>
+
+      <div id="playersList" class="space-y-2">
+        <div class="text-center py-6 text-xs text-gray-500">अभी कोई खिलाड़ी नहीं जुड़ा है।</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let squad = JSON.parse(localStorage.getItem('royal_arena_squad') || '[]');
+
+    function savePlayer(event) {
+      event.preventDefault();
+      const name = document.getElementById('playerName').value.trim();
+      const role = document.getElementById('playerRole').value;
+      const phone = document.getElementById('playerPhone').value.trim();
+
+      if (!name) return;
+
+      const newPlayer = {
+        id: Date.now(),
+        name: name,
+        role: role,
+        phone: phone || 'उपलब्ध नहीं'
+      };
+
+      squad.push(newPlayer);
+      localStorage.setItem('royal_arena_squad', JSON.stringify(squad));
+
+      document.getElementById('addPlayerForm').reset();
+      renderSquad();
+    }
+
+    function deletePlayer(id) {
+      squad = squad.filter(player => player.id !== id);
+      localStorage.setItem('royal_arena_squad', JSON.stringify(squad));
+      renderSquad();
+    }
+
+    function renderSquad() {
+      const container = document.getElementById('playersList');
+      const totalCount = squad.length;
+
+      document.getElementById('squadCountBadge').innerText = `${totalCount} खिलाड़ी`;
+      document.getElementById('statTotal').innerText = totalCount;
+      document.getElementById('statBatsman').innerText = squad.filter(p => p.role === 'Batsman').length;
+      document.getElementById('statBowler').innerText = squad.filter(p => p.role === 'Bowler').length;
+      document.getElementById('statAllRounder').innerText = squad.filter(p => p.role === 'All-Rounder').length;
+
+      if (totalCount === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-xs text-gray-500">अभी कोई खिलाड़ी नहीं जुड़ा है।</div>';
+        return;
+      }
+
+      container.innerHTML = squad.map(player => `
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-gray-800 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-xs border border-amber-500/20">
+              ${player.name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">${player.name}</div>
+              <div class="text-[10px] text-gray-400">${player.role} • 📞 ${player.phone}</div>
+            </div>
+          </div>
+          <button onclick="deletePlayer(${player.id})" class="text-rose-400 text-xs px-2 py-1 hover:bg-rose-500/10 rounded">
+            हटाएं
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // पहली बार लोड होने पर लिस्ट दिखाएं
+    renderSquad();
+  </script>
+
+</body>
+</html>
